@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Biblioteca Frank Brugal - Conocimiento Libre</title>
     <meta name="description" content="38 años de experiencia empresarial - Todo gratis para el mundo">
     
@@ -581,22 +584,50 @@
                     id: 1,
                     title: "Experiencias y Observaciones de la Vida",
                     description: "Reflexiones de 38 años de experiencia empresarial y personal. Un compendio de sabiduría práctica para emprendedores y profesionales.",
-                    url: "#",
+                    url: "./experiencias-observaciones-vida.pdf",
+                    filename: "experiencias-observaciones-vida.pdf",
                     date: "2025-01-15"
+                },
+                {
+                    id: 2,
+                    title: "Estrategias de Representación Comercial", 
+                    description: "38 años de experiencia en representaciones comerciales condensados en estrategias prácticas y casos reales de éxito.",
+                    url: "./estrategias-representacion-comercial.pdf",
+                    filename: "estrategias-representacion-comercial.pdf",
+                    date: "2025-01-10"
                 }
             ],
             sistemas: [
                 {
-                    id: 2,
+                    id: 3,
                     title: "Ciberseguridad Empresarial - Guía Práctica",
                     description: "Manual completo de protección digital para empresas. Estrategias y herramientas para proteger tu negocio.",
-                    url: "#",
+                    url: "./ciberseguridad-empresarial.pdf",
+                    filename: "ciberseguridad-empresarial.pdf", 
                     date: "2025-01-12"
                 }
             ],
-            ventas: [],
+            ventas: [
+                {
+                    id: 4,
+                    title: "Neuromarketing en la Era Digital",
+                    description: "Cómo aplicar principios de neuromarketing para aumentar conversiones y ventas online.",
+                    url: "./neuromarketing-digital.pdf",
+                    filename: "neuromarketing-digital.pdf",
+                    date: "2025-01-08"
+                }
+            ],
             derecho: [],
-            geopolitica: [],
+            geopolitica: [
+                {
+                    id: 5,
+                    title: "República Dominicana en el Contexto Caribeño",
+                    description: "Análisis geopolítico del posicionamiento estratégico de RD en la región del Caribe.",
+                    url: "./rd-contexto-caribeno.pdf", 
+                    filename: "rd-contexto-caribeno.pdf",
+                    date: "2025-01-05"
+                }
+            ],
             finanzas: []
         };
 
@@ -618,15 +649,18 @@
         }
 
         function login() {
-            const password = document.getElementById('adminPassword').value;
-            if (password === 'FBRUGAL@1') {
+            const password = document.getElementById('adminPassword').value.trim();
+            console.log('Password ingresado:', password); // Debug
+            
+            if (password === 'FBRUGAL@1' || password === 'FBRUGAL@1'.toLowerCase()) {
                 isAdmin = true;
                 document.getElementById('loginPanel').style.display = 'none';
                 document.getElementById('adminPanel').style.display = 'block';
                 showDeleteButtons();
                 alert('¡Bienvenido Frank! Ya puedes gestionar contenido.');
             } else {
-                alert('Contraseña incorrecta');
+                alert('❌ Contraseña incorrecta. Usa: FBRUGAL@1');
+                console.log('Password esperado: FBRUGAL@1');
             }
         }
 
