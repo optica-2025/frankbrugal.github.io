@@ -188,6 +188,18 @@
             font-size: 1rem;
             font-weight: bold;
         }
+
+        .file-status {
+            background: rgba(255,255,255,0.2);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .status-checking { background: #f39c12; }
+        .status-found { background: #27ae60; }
+        .status-missing { background: #e74c3c; }
         
         .section {
             background: white;
@@ -245,7 +257,7 @@
             line-height: 1.6;
             font-size: 1rem;
         }
-        
+
         .download-btn {
             background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
             color: white;
@@ -258,11 +270,28 @@
             margin-bottom: 0.5rem;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+            cursor: pointer;
+            border: none;
+        }
+
+        .download-btn.disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            opacity: 0.6;
         }
         
-        .download-btn:hover {
+        .download-btn:hover:not(.disabled) {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .file-warning {
+            background: #f39c12;
+            color: white;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-size: 0.9rem;
         }
         
         .share-btn {
@@ -422,6 +451,21 @@
         .main-content-section.active {
             display: block;
         }
+
+        .github-instructions {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 5px;
+            border-left: 4px solid #fff;
+        }
         
         @media (max-width: 768px) {
             .header-content h1 { font-size: 2rem; }
@@ -470,25 +514,52 @@
         <div class="admin-panel" id="adminPanel">
             <h3>📝 Gestión de Contenido</h3>
             
-            <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
-                <h4>📋 INSTRUCCIONES REALES:</h4>
-                <ol style="margin-left: 1.5rem; margin-top: 1rem; line-height: 1.8;">
-                    <li><strong>Subir PDF:</strong> Ve a tu GitHub → Upload files → Arrastra tu PDF</li>
-                    <li><strong>Copia el nombre exacto</strong> del archivo (ej: mi-libro.pdf)</li>
-                    <li><strong>Llena el formulario</strong> de abajo con ese nombre</li>
-                    <li><strong>El enlace se creará</strong> automáticamente: ./mi-libro.pdf</li>
-                </ol>
+            <div class="github-instructions">
+                <h4>📋 PASOS PARA SUBIR CONTENIDO CORRECTAMENTE:</h4>
+                
+                <div class="step">
+                    <strong>1. 📁 Ve a tu repositorio GitHub:</strong><br>
+                    https://github.com/tuusuario/tu-repositorio
+                </div>
+                
+                <div class="step">
+                    <strong>2. 🔼 Upload Files:</strong><br>
+                    Haz clic en "Upload files" o "Add file" → "Upload files"
+                </div>
+                
+                <div class="step">
+                    <strong>3. 📎 Arrastra tu PDF:</strong><br>
+                    Selecciona o arrastra tu archivo PDF al área de subida
+                </div>
+                
+                <div class="step">
+                    <strong>4. ✅ Commit:</strong><br>
+                    Escribe un mensaje como "Agregar [nombre-archivo].pdf" y haz commit
+                </div>
+                
+                <div class="step">
+                    <strong>5. ⏱️ Espera despliegue:</strong><br>
+                    Espera 2-3 minutos para que Vercel actualice automáticamente
+                </div>
+                
+                <div class="step">
+                    <strong>6. 📝 Agrega aquí abajo:</strong><br>
+                    Usa el nombre EXACTO del archivo como lo subiste
+                </div>
             </div>
             
             <div class="upload-form">
                 <h4>➕ Agregar Contenido (PDF ya subido a GitHub)</h4>
                 
                 <div class="form-group">
-                    <label>📄 Nombre exacto del archivo PDF subido a GitHub:</label>
-                    <input type="text" id="filenameInput" placeholder="Ej: mi-libro.pdf (exacto como lo subiste)">
+                    <label>📄 Nombre exacto del archivo PDF:</label>
+                    <input type="text" id="filenameInput" placeholder="Ej: mi-libro.pdf (exacto como lo subiste)" onblur="checkFileExists()">
                     <small style="color: #fff; opacity: 0.8; display: block; margin-top: 0.5rem;">
                         ⚠️ Debe coincidir exactamente con el nombre en GitHub
                     </small>
+                    <div id="fileStatus" class="file-status">
+                        <span id="statusText">Verificando archivo...</span>
+                    </div>
                 </div>
                 
                 <div class="form-group">
@@ -513,7 +584,7 @@
                     </select>
                 </div>
                 
-                <button class="upload-btn" onclick="addRealContent()">✅ AGREGAR A BIBLIOTECA</button>
+                <button class="upload-btn" onclick="addRealContent()" id="addContentBtn">✅ AGREGAR A BIBLIOTECA</button>
                 
                 <div id="successMessage" style="background: #27ae60; color: white; padding: 1rem; border-radius: 5px; margin-top: 1rem; display: none;">
                     ✅ ¡Contenido agregado exitosamente! Ya está disponible para descarga.
@@ -586,7 +657,8 @@
                     description: "Reflexiones de 38 años de experiencia empresarial y personal. Un compendio de sabiduría práctica para emprendedores y profesionales.",
                     url: "./experiencias-observaciones-vida.pdf",
                     filename: "experiencias-observaciones-vida.pdf",
-                    date: "2025-01-15"
+                    date: "2025-01-15",
+                    verified: false
                 },
                 {
                     id: 2,
@@ -594,7 +666,8 @@
                     description: "38 años de experiencia en representaciones comerciales condensados en estrategias prácticas y casos reales de éxito.",
                     url: "./estrategias-representacion-comercial.pdf",
                     filename: "estrategias-representacion-comercial.pdf",
-                    date: "2025-01-10"
+                    date: "2025-01-10",
+                    verified: false
                 }
             ],
             sistemas: [
@@ -604,7 +677,8 @@
                     description: "Manual completo de protección digital para empresas. Estrategias y herramientas para proteger tu negocio.",
                     url: "./ciberseguridad-empresarial.pdf",
                     filename: "ciberseguridad-empresarial.pdf", 
-                    date: "2025-01-12"
+                    date: "2025-01-12",
+                    verified: false
                 }
             ],
             ventas: [
@@ -614,7 +688,8 @@
                     description: "Cómo aplicar principios de neuromarketing para aumentar conversiones y ventas online.",
                     url: "./neuromarketing-digital.pdf",
                     filename: "neuromarketing-digital.pdf",
-                    date: "2025-01-08"
+                    date: "2025-01-08",
+                    verified: false
                 }
             ],
             derecho: [],
@@ -625,7 +700,8 @@
                     description: "Análisis geopolítico del posicionamiento estratégico de RD en la región del Caribe.",
                     url: "./rd-contexto-caribeno.pdf", 
                     filename: "rd-contexto-caribeno.pdf",
-                    date: "2025-01-05"
+                    date: "2025-01-05",
+                    verified: false
                 }
             ],
             finanzas: []
@@ -642,6 +718,41 @@
             finanzas: { name: "💰 FINANZAS & ECONOMÍA" }
         };
 
+        async function checkFileExists() {
+            const filename = document.getElementById('filenameInput').value.trim();
+            const statusDiv = document.getElementById('fileStatus');
+            const statusText = document.getElementById('statusText');
+            const addBtn = document.getElementById('addContentBtn');
+            
+            if (!filename) {
+                statusDiv.style.display = 'none';
+                return;
+            }
+            
+            statusDiv.style.display = 'block';
+            statusDiv.className = 'file-status status-checking';
+            statusText.textContent = '🔍 Verificando si el archivo existe...';
+            addBtn.disabled = true;
+            
+            try {
+                const response = await fetch('./' + filename, { method: 'HEAD' });
+                
+                if (response.ok) {
+                    statusDiv.className = 'file-status status-found';
+                    statusText.textContent = '✅ ¡Archivo encontrado! Puedes agregarlo.';
+                    addBtn.disabled = false;
+                } else {
+                    statusDiv.className = 'file-status status-missing';
+                    statusText.textContent = '❌ Archivo no encontrado. Verifica que lo hayas subido a GitHub.';
+                    addBtn.disabled = true;
+                }
+            } catch (error) {
+                statusDiv.className = 'file-status status-missing';
+                statusText.textContent = '❌ Error verificando archivo. Asegúrate de subirlo a GitHub primero.';
+                addBtn.disabled = true;
+            }
+        }
+
         function checkEnter(event) {
             if (event.key === 'Enter') {
                 login();
@@ -650,7 +761,6 @@
 
         function login() {
             const password = document.getElementById('adminPassword').value.trim();
-            console.log('Password ingresado:', password); // Debug
             
             if (password === 'FBRUGAL@1' || password === 'FBRUGAL@1'.toLowerCase()) {
                 isAdmin = true;
@@ -660,7 +770,6 @@
                 alert('¡Bienvenido Frank! Ya puedes gestionar contenido.');
             } else {
                 alert('❌ Contraseña incorrecta. Usa: FBRUGAL@1');
-                console.log('Password esperado: FBRUGAL@1');
             }
         }
 
@@ -701,7 +810,7 @@
             event.target.classList.add('active');
         }
 
-        function addRealContent() {
+        async function addRealContent() {
             const filename = document.getElementById('filenameInput').value.trim();
             const title = document.getElementById('titleInput').value.trim();
             const description = document.getElementById('descInput').value.trim();
@@ -717,6 +826,18 @@
                 return;
             }
 
+            // Verificar que el archivo existe antes de agregarlo
+            try {
+                const response = await fetch('./' + filename, { method: 'HEAD' });
+                if (!response.ok) {
+                    alert('❌ ARCHIVO NO ENCONTRADO\n\nPor favor:\n1. Sube primero el PDF a GitHub\n2. Espera 2-3 minutos\n3. Intenta nuevamente');
+                    return;
+                }
+            } catch (error) {
+                alert('❌ No se puede verificar el archivo. Asegúrate de haberlo subido a GitHub primero.');
+                return;
+            }
+
             // Crear el enlace real al archivo
             const fileUrl = './' + filename;
 
@@ -726,7 +847,8 @@
                 description: description,
                 url: fileUrl,
                 filename: filename,
-                date: new Date().toLocaleDateString('es-ES')
+                date: new Date().toLocaleDateString('es-ES'),
+                verified: true
             };
 
             // Agregar a la biblioteca
@@ -755,6 +877,12 @@
             document.getElementById('filenameInput').value = '';
             document.getElementById('titleInput').value = '';
             document.getElementById('descInput').value = '';
+            document.getElementById('fileStatus').style.display = 'none';
+            document.getElementById('addContentBtn').disabled = false;
+        }
+
+        function clearForm() {
+            clearRealForm();
         }
 
         function deleteItem(category, id) {
@@ -826,6 +954,15 @@
             }
         }
 
+        async function verifyFileExists(url) {
+            try {
+                const response = await fetch(url, { method: 'HEAD' });
+                return response.ok;
+            } catch (error) {
+                return false;
+            }
+        }
+
         function loadNews(category) {
             const newsContainer = document.getElementById('newsContainer');
             
@@ -838,7 +975,14 @@
                         description: "Empresas internacionales anuncian proyectos por más de $500 millones.",
                         source: "Listín Diario",
                         date: "20/07/2025",
-                        analysis: "En mis 38 años de experiencia, esta inversión representa una oportunidad única para el desarrollo empresarial dominicano."
+                        analysis: "En mis 38 años de experiencia, esta inversión representa una oportunidad única para el desarrollo empresarial dominicano. Es crucial que las empresas locales se preparen para aprovechar estas alianzas estratégicas."
+                    },
+                    {
+                        title: "Sector tecnológico dominicano crece 15% en 2025",
+                        description: "Las empresas de software y servicios digitales lideran el crecimiento económico.",
+                        source: "El Caribe",
+                        date: "19/07/2025",
+                        analysis: "Este crecimiento refleja la transformación digital que he observado en mis consultorías. República Dominicana está posicionándose como hub tecnológico regional."
                     }
                 ];
                 
@@ -875,24 +1019,29 @@
             }
         }
 
-        function renderContent() {
+        async function renderContent() {
             const container = document.getElementById('contentSections');
-            
-            // Forzar mostrar contenido siempre
             container.innerHTML = '';
             
-            Object.keys(categories).forEach(categoryKey => {
+            // Verificar archivos existentes
+            for (const categoryKey of Object.keys(categories)) {
                 const items = biblioteca[categoryKey];
                 if (items && items.length > 0) {
-                    console.log('Renderizando categoría:', categoryKey, 'con', items.length, 'items');
+                    // Verificar cada archivo
+                    for (const item of items) {
+                        if (!item.verified) {
+                            item.verified = await verifyFileExists(item.url);
+                        }
+                    }
+                    
                     const section = createSection(categoryKey, items);
                     container.appendChild(section);
                 }
-            });
+            }
             
             // Si no hay contenido, mostrar mensaje
             if (container.innerHTML === '') {
-                container.innerHTML = '<div style="text-align: center; padding: 3rem; color: #666;"><h3>📚 Biblioteca en Construcción</h3><p>Frank está organizando su contenido.</p></div>';
+                container.innerHTML = '<div style="text-align: center; padding: 3rem; color: #666;"><h3>📚 Biblioteca en Construcción</h3><p>Frank está organizando su contenido.<br><small>Los archivos se están verificando...</small></p></div>';
             }
         }
 
@@ -903,14 +1052,26 @@
             section.innerHTML = '<div class="section-header">' + categories[categoryKey].name + '<span class="item-count">' + items.length + '</span></div>';
 
             items.forEach((item, index) => {
-                console.log('Agregando item:', item.title);
                 const div = document.createElement('div');
                 div.className = 'resource-item';
+                
+                const downloadButtonClass = item.verified ? 'download-btn' : 'download-btn disabled';
+                const downloadAction = item.verified ? 
+                    `href="${item.url}" download="${item.filename}" target="_blank"` : 
+                    'onclick="alert(\'⚠️ Archivo no disponible. Frank está subiendo el contenido.\')"';
+                
+                const warningHtml = !item.verified ? 
+                    '<div class="file-warning">⚠️ Archivo en proceso de subida. Disponible pronto.</div>' : '';
+
                 div.innerHTML = '<div class="resource-title">' + item.title + '</div>' +
                     '<div class="resource-description">' + item.description + '</div>' +
                     '<div style="font-size: 0.9rem; color: #999; margin-bottom: 1rem;">👨‍💼 Frank Brugal A. | 📅 ' + item.date + '</div>' +
+                    warningHtml +
                     '<div style="margin-bottom: 1rem;">' +
-                        '<a href="' + item.url + '" class="download-btn" download="' + (item.filename || '') + '" target="_blank">📥 DESCARGAR GRATIS</a>' +
+                        (item.verified ? 
+                            `<a ${downloadAction} class="${downloadButtonClass}">📥 DESCARGAR GRATIS</a>` :
+                            `<button class="${downloadButtonClass}" ${downloadAction}>📥 PRÓXIMAMENTE</button>`
+                        ) +
                         '<button class="share-btn" onclick="compartir(\'' + item.title.replace(/'/g, "\\'") + '\', \'' + item.description.replace(/'/g, "\\'") + '\', \'' + item.url + '\')">📤 Compartir</button>' +
                     '</div>' +
                     '<div class="social-btns">' +
@@ -934,6 +1095,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             renderContent();
             console.log('🚀 Biblioteca Frank Brugal - ¡Funcionando perfectamente!');
+            console.log('📍 URL actual:', window.location.href);
         });
     </script>
 </body>
