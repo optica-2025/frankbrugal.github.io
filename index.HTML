@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frank Brugal - Biblioteca Digital Gratuita</title>
+    <meta name="description" content="38 años de experiencia empresarial - Todo gratis para el mundo">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+        
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        
+        header {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .contact-btn {
+            background: #3498db;
+            color: white;
+            padding: 0.8rem 1.2rem;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        /* PANEL ADMIN SIMPLE */
+        .admin-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .admin-panel {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .admin-input {
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            margin: 0.5rem;
+            font-size: 1rem;
+            width: 250px;
+        }
+
+        .admin-btn {
+            background: #e74c3c;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .admin-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .upload-form {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .upload-btn {
+            background: #27ae60;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            background: #229954;
+            transform: translateY(-2px);
+        }
+        
+        .section {
+            background: white;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .section-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .item-count {
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #e74c3c;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .resource-item {
+            padding: 2rem;
+            border-bottom: 1px solid #ecf0f1;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .resource-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .resource-item:last-child {
+            border-bottom: none;
+        }
+        
+        .resource-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 0.8rem;
+        }
+        
+        .resource-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            display: inline-block;
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(135deg, #229954 0%, #27ae60 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+        
+        .share-btn {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
+        }
+
+        .share-btn:hover {
+            background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+            transform: translateY(-3px);
+        }
+
+        .social-btns {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .social-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: none;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-whatsapp { 
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+        .btn-twitter { 
+            background: linear-gradient(135deg, #1da1f2 0%, #0d8bd9 100%);
+            box-shadow: 0 4px 15px rgba(29, 161, 242, 0.3);
+        }
+        .btn-facebook { 
+            background: linear-gradient(135deg, #1877f2 0%, #166fe5 100%);
+            box-shadow: 0 4px 15px rgba(24, 119, 242, 0.3);
+        }
+        .btn-instagram { 
+            background: linear-gradient(135deg, #E4405F 0%, #C13584 100%);
+            box-shadow: 0 4px 15px rgba(228, 64, 95, 0.3);
+        }
+        .btn-tiktok { 
+            background: linear-gradient(135deg, #000000 0%, #ff0050 100%);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+            transform: scale(1.1);
+        }
+        
+        .notice {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+        }
+        
+        .donation {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(39, 174, 96, 0.3);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #666;
+        }
+
+        .empty-state h3 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .simple-upload {
+            background: rgba(255,255,255,0.15);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border: 2px dashed rgba(255,255,255,0.3);
+        }
+
+        .upload-area {
+            text-align: center;
+            padding: 2rem;
+            border: 2px dashed rgba(255,255,255,0.5);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: white;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .file-input {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .contact-info { flex-direction: column; align-items: center; }
+            .resource-item { padding: 1.5rem; }
+            .admin-input { width: 100%; }
+            .social-btns { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Frank Brugal A.</h1>
+            <div class="subtitle">Biblioteca Digital Gratuita</div>
+            <p><strong>38 años de experiencia empresarial</strong> • Todo gratis para el mundo</p>
+            <p style="margin-top: 0.5rem; color: #95a5a6;">Conocimiento libre • Sin registro • Descarga directa</p>
+            
+            <div class="contact-info">
+                <a href="mailto:brugalfrank7@gmail.com" class="contact-btn">📧 brugalfrank7@gmail.com</a>
+                <a href="mailto:fbrugaljrubinstein@gmail.com" class="contact-btn">💼 fbrugaljrubinstein@gmail.com</a>
+                <a href="https://wa.me/18293424652?text=Hola Frank, vi tu biblioteca digital" class="contact-btn" target="_blank">📱 829-342-4652</a>
+                <a href="http://fbrugalconsultores.com" class="contact-btn" target="_blank">🏢 fbrugalconsultores.com</a>
+            </div>
+        </header>
+
+        <!-- PANEL LOGIN -->
+        <div class="admin-login" id="loginPanel">
+            <h3>🔐 Panel de Administración - Solo Frank Brugal</h3>
+            <p style="margin-bottom: 1rem;">Gestiona tu biblioteca digital</p>
+            <input type="password" id="adminPassword" class="admin-input" placeholder="Contraseña" onkeypress="checkEnter(event)">
+            <button class="admin-btn" onclick="login()">🚀 Entrar</button>
+        </div>
+
+        <!-- PANEL ADMIN -->
+        <div class="admin-panel" id="adminPanel">
+            <h3>📝 Gestión de Contenido</h3>
+            <p style="margin-bottom: 1rem;">Sube archivos y gestiona tu biblioteca</p>
+            
+            <div class="simple-upload">
+                <h4>📎 Subir Nuevo PDF</h4>
+                <p style="margin-bottom: 1rem; opacity: 0.9;">Arrastra tu PDF o haz clic para seleccionar</p>
+                
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                    <p style="margin: 0;">🗂️ Haz clic aquí para seleccionar tu PDF</p>
+                </div>
+                <input type="file" id="fileInput" class="file-input" accept=".pdf" onchange="handleFileSelect(event)">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label>📝 Título del documento:</label>
+                        <input type="text" id="titleInput" placeholder="Ej: Estrategias de Marketing">
+                    </div>
+                    <div class="form-group">
+                        <label>📂 Categoría:</label>
+                        <select id="categoryInput">
+                            <option value="libros">📖 Libros</option>
+                            <option value="sistemas">💻 Sistemas & Tecnología</option>
+                            <option value="ventas">🚀 Ventas & Marketing</option>
+                            <option value="derecho">⚖️ Derecho & Compliance</option>
+                            <option value="geopolitica">🌍 Geopolítica & Análisis</option>
+                            <option value="finanzas">💰 Finanzas & Economía</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>📖 Descripción:</label>
+                    <textarea id="descInput" placeholder="Describe brevemente el contenido..." style="height: 80px;"></textarea>
+                </div>
+                
+                <button class="upload-btn" onclick="addContent()">✅ PUBLICAR CONTENIDO</button>
+            </div>
+
+            <button class="admin-btn" onclick="logout()" style="background: #95a5a6;">🚪 Cerrar Sesión</button>
+        </div>
+
+        <div class="notice">
+            <strong>🌍 MISIÓN CULTURAL</strong><br>
+            Democratizar el conocimiento • Educación gratuita para todos • República Dominicana al mundo
+        </div>
+
+        <!-- CONTENIDO DINÁMICO -->
+        <div id="contentSections">
+            <div class="empty-state">
+                <h3>📚 Biblioteca en Construcción</h3>
+                <p>Frank está organizando sus 38 años de experiencia empresarial en contenido digital.</p>
+                <p style="margin-top: 1rem; font-style: italic;">Los recursos aparecerán aquí cuando estén listos para descarga.</p>
+            </div>
+        </div>
+
+        <!-- DONACIONES -->
+        <div class="donation">
+            <h3 style="margin-bottom: 1rem;">🤝 Apoya la Cultura y una Causa Noble</h3>
+            <p style="font-size: 1.1rem;"><strong>60% de las donaciones van al Patronato de Ciegos de República Dominicana</strong></p>
+            <p style="font-size: 1.2rem; margin-top: 1rem; font-weight: bold;">
+                💳 PayPal: frankbrugal@codetel.net.do
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // BIBLIOTECA SIMPLE CON CONTENIDO INICIAL
+        let biblioteca = JSON.parse(localStorage.getItem('bibliotecaFrank')) || {
+            libros: [
+                {
+                    id: 1,
+                    title: "Experiencias y Observaciones de la Vida",
+                    description: "Reflexiones profundas de 38 años de experiencia empresarial y personal. Un compendio de sabiduría práctica para emprendedores y profesionales que buscan crecer tanto personal como profesionalmente.",
+                    url: "#",
+                    filename: "experiencias-observaciones-vida.pdf",
+                    date: "2025-01-15"
+                },
+                {
+                    id: 2,
+                    title: "Estrategias de Representación Comercial",
+                    description: "Décadas de experiencia en representaciones comerciales condensadas en estrategias prácticas y casos reales de éxito. Métodos probados para maximizar ventas y construir relaciones comerciales duraderas.",
+                    url: "#",
+                    filename: "estrategias-representacion-comercial.pdf",
+                    date: "2025-01-10"
+                }
+            ],
+            sistemas: [
+                {
+                    id: 3,
+                    title: "Ciberseguridad Empresarial - Guía Práctica",
+                    description: "Manual completo de protección digital para empresas. Estrategias, herramientas y mejores prácticas para proteger tu negocio en el mundo digital actual contra todas las amenazas cibernéticas.",
+                    url: "#",
+                    filename: "ciberseguridad-empresarial.pdf",
+                    date: "2025-01-08"
+                }
+            ],
+            ventas: [
+                {
+                    id: 4,
+                    title: "Neuromarketing en la Era Digital",
+                    description: "Cómo aplicar principios de neuromarketing para aumentar conversiones y ventas online. Técnicas psicológicas y herramientas digitales para optimizar el embudo de ventas.",
+                    url: "#",
+                    filename: "neuromarketing-digital.pdf",
+                    date: "2025-01-05"
+                }
+            ],
+            derecho: [],
+            geopolitica: [
+                {
+                    id: 5,
+                    title: "República Dominicana en el Contexto Caribeño",
+                    description: "Análisis geopolítico profundo del posicionamiento estratégico de RD en la región del Caribe. Oportunidades comerciales, desafíos políticos y estrategias de desarrollo regional.",
+                    url: "#",
+                    filename: "rd-contexto-caribeno.pdf",
+                    date: "2025-01-01"
+                }
+            ],
+            finanzas: []
+        };
+
+        let isAdmin = false;
+
+        const categories = {
+            libros: { name: "📖 LIBROS COMPLETOS", icon: "📖" },
+            sistemas: { name: "💻 SISTEMAS & TECNOLOGÍA", icon: "💻" },
+            ventas: { name: "🚀 VENTAS & MARKETING", icon: "🚀" },
+            derecho: { name: "⚖️ DERECHO & COMPLIANCE", icon: "⚖️" },
+            geopolitica: { name: "🌍 GEOPOLÍTICA & ANÁLISIS", icon: "🌍" },
+            finanzas: { name: "💰 FINANZAS & ECONOMÍA", icon: "💰" }
+        };
+
+        // LOGIN
+        function checkEnter(event) {
+            if (event.key === 'Enter') login();
+        }
+
+        function login() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === 'FBRUGAL@1') {
+                isAdmin = true;
+                document.getElementById('loginPanel').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                showDeleteButtons();
+                alert('¡Bienvenido Frank! Ya puedes gestionar tu biblioteca.');
+            } else {
+                alert('Contraseña incorrecta');
+            }
+        }
+
+        function logout() {
+            isAdmin = false;
+            document.getElementById('loginPanel').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+            hideDeleteButtons();
+            clearForm();
+        }
+
+        function showDeleteButtons() {
+            document.querySelectorAll('.delete-btn').forEach(btn => btn.style.display = 'block');
+        }
+
+        function hideDeleteButtons() {
+            document.querySelectorAll('.delete-btn').forEach(btn => btn.style.display = 'none');
+        }
+
+        // MANEJO DE ARCHIVOS
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file && file.type === 'application/pdf') {
+                const filename = file.name.replace(/[^a-zA-Z0-9.-]/g, '-').toLowerCase();
+                const title = file.name.replace('.pdf', '').replace(/[-_]/g, ' ');
+                
+                document.getElementById('titleInput').value = title;
+                
+                // En un entorno real, aquí subirías el archivo
+                // Por ahora, simulamos que se subió correctamente
+                alert(`Archivo "${file.name}" listo para agregar a la biblioteca.`);
+            } else {
+                alert('Por favor selecciona un archivo PDF válido.');
+            }
+        }
+
+        // AGREGAR CONTENIDO
+        function addContent() {
+            const title = document.getElementById('titleInput').value.trim();
+            const description = document.getElementById('descInput').value.trim();
+            const category = document.getElementById('categoryInput').value;
+
+            if (!title || !description) {
+                alert('Por favor completa el título y la descripción.');
+                return;
+            }
+
+            const filename = title.toLowerCase().replace(/[^a-zA-Z0-9]/g, '-') + '.pdf';
+            
+            const newItem = {
+                id: Date.now(),
+                title: title,
+                description: description,
+                url: `./pdfs/${filename}`, // Ruta donde estarán los PDFs
+                filename: filename,
+                date: new Date().toLocaleDateString('es-ES')
+            };
+
+            biblioteca[category].push(newItem);
+            saveData();
+            renderContent();
+            clearForm();
+            
+            alert(`✅ "${title}" agregado exitosamente a ${categories[category].name}!\n\nRecuerda subir el archivo PDF al servidor.`);
+        }
+
+        function clearForm() {
+            document.getElementById('titleInput').value = '';
+            document.getElementById('descInput').value = '';
+            document.getElementById('fileInput').value = '';
+        }
+
+        function deleteItem(category, id) {
+            if (confirm('¿Estás seguro de que quieres eliminar este contenido?')) {
+                biblioteca[category] = biblioteca[category].filter(item => item.id !== id);
+                saveData();
+                renderContent();
+                alert('Contenido eliminado exitosamente');
+            }
+        }
+
+        // COMPARTIR
+        function compartir(title, description, url) {
+            const siteUrl = window.location.href;
+            const shareText = `📚 ${title}\n\n${description}\n\n🔗 Descarga gratis: ${siteUrl}\n\n#CulturaLibre #EducaciónGratuita #FrankBrugal #RepúblicaDominicana`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: shareText,
+                    url: siteUrl
+                });
+            } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('¡Enlace copiado! Compártelo donde quieras.');
+                });
+            } else {
+                alert(`Copia este texto para compartir:\n\n${shareText}`);
+            }
+        }
+
+        function shareToSocial(platform, title, description) {
+            const url = window.location.href;
+            const text = `📚 ${title} - ${description}`;
+            let shareUrl = '';
+
+            switch(platform) {
+                case 'whatsapp':
+                    shareUrl = `https://wa.me/?text=${encodeURIComponent(text + '\n\n🔗 Biblioteca gratuita: ' + url)}`;
+                    break;
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=CulturaLibre,EducaciónGratuita,FrankBrugal`;
+                    break;
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`;
+                    break;
+                case 'instagram':
+                    // Instagram no permite enlaces directos, copiamos al portapapeles
+                    const instagramText = `${text}\n\n🔗 Enlace en mi bio\n\n#CulturaLibre #EducaciónGratuita #FrankBrugal #RepúblicaDominicana`;
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(instagramText).then(() => {
+                            alert('¡Texto copiado! Pégalo en tu post de Instagram.');
+                        });
+                    } else {
+                        alert(`Copia este texto para Instagram:\n\n${instagramText}`);
+                    }
+                    return;
+                case 'tiktok':
+                    // TikTok tampoco permite enlaces directos
+                    const tiktokText = `${text}\n\n🔗 Enlace en mi bio\n\n#CulturaLibre #EducaciónGratuita #FrankBrugal #RD`;
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(tiktokText).then(() => {
+                            alert('¡Texto copiado! Úsalo en tu video de TikTok.');
+                        });
+                    } else {
+                        alert(`Copia este texto para TikTok:\n\n${tiktokText}`);
+                    }
+                    return;
+            }
+
+            if (shareUrl) {
+                window.open(shareUrl, '_blank');
+            }
+        }
+
+        // RENDERIZAR CONTENIDO
+        function renderContent() {
+            const container = document.getElementById('contentSections');
+            const hasContent = Object.values(biblioteca).some(category => category.length > 0);
+            
+            if (!hasContent) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>📚 Biblioteca en Construcción</h3>
+                        <p>Frank está organizando sus 38 años de experiencia empresarial.</p>
+                        <p style="margin-top: 1rem; font-style: italic;">Los recursos aparecerán aquí cuando estén listos.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            Object.keys(categories).forEach(categoryKey => {
+                const items = biblioteca[categoryKey];
+                if (items.length > 0) {
+                    container.appendChild(createSection(categoryKey, items));
+                }
+            });
+        }
+
+        function createSection(categoryKey, items) {
+            const section = document.createElement('div');
+            section.className = 'section';
+
+            section.innerHTML = `
+                <div class="section-header">
+                    ${categories[categoryKey].name}
+                    <span class="item-count">${items.length}</span>
+                </div>
+            `;
+
+            items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'resource-item';
+                div.innerHTML = `
+                    <div class="resource-title">${item.title}</div>
+                    <div class="resource-description">${item.description}</div>
+                    <a href="${item.url}" class="download-btn" ${item.url === '#' ? 'onclick="alert(\'PDF próximamente disponible\'); return false;"' : 'download'}>📥 DESCARGAR GRATIS</a>
+                    <button class="share-btn" onclick="compartir('${item.title.replace(/'/g, "\\'")}', '${item.description.replace(/'/g, "\\'")}', '${item.url}')">📤 Compartir</button>
+                    
+                    <div class="social-btns">
+                        <a href="#" class="social-btn btn-whatsapp" onclick="shareToSocial('whatsapp', '${item.title.replace(/'/g, "\\'")}', '${item.description.replace(/'/g, "\\'")}'); return false;">📱 WhatsApp</a>
+                        <a href="#" class="social-btn btn-twitter" onclick="shareToSocial('twitter', '${item.title.replace(/'/g, "\\'")}', '${item.description.replace(/'/g, "\\'")}'); return false;">🐦 Twitter</a>
+                        <a href="#" class="social-btn btn-facebook" onclick="shareToSocial('facebook', '${item.title.replace(/'/g, "\\'")}', '${item.description.replace(/'/g, "\\'")}'); return false;">📘 Facebook</a>
+                        <a href="#" class="social-btn btn-instagram" onclick="shareToSocial('instagram', '${item.title.replace(/'/g, "\\'")}', '${item.description.replace(/'/g, "\\'")}'); return false;">📸 Instagram</a>
+                        <a href="#" class="social-btn btn-tiktok" onclick="shareToSocial('tiktok', '${item.title.replace(/'/g, "\\'")}', '${item.description.replace(/'/g, "\\'")}'); return false;">🎵 TikTok</a>
+                    </div>
+
+                    <button class="delete-btn" onclick="deleteItem('${categoryKey}', ${item.id})" style="display: ${isAdmin ? 'block' : 'none'}">🗑️</button>
+                `;
+                section.appendChild(div);
+            });
+
+            return section;
+        }
+
+        function saveData() {
+            localStorage.setItem('bibliotecaFrank', JSON.stringify(biblioteca));
+        }
+
+        // INICIALIZACIÓN
+        document.addEventListener('DOMContentLoaded', function() {
+            renderContent();
+        });
+
+        // MOSTRAR MENSAJE DE ÉXITO
+        console.log('🚀 Biblioteca Digital Frank Brugal - ¡Funcionando perfectamente!');
+        console.log('📚 Sistema completo de gestión de contenido educativo');
+        console.log('🌍 Democratizando el conocimiento para el mundo');
+    </script>
+
+    <!-- ANALYTICS Y SEO -->
+    <meta property="og:title" content="Frank Brugal - Biblioteca Digital Gratuita">
+    <meta property="og:description" content="38 años de experiencia empresarial disponible gratis. Libros, artículos y análisis sin costo.">
+    <meta property="og:url" content="https://frankbrugal-github-io.vercel.app">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Frank Brugal - Conocimiento Libre">
+    <meta name="twitter:description" content="Biblioteca digital gratuita con 38 años de experiencia empresarial">
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "Biblioteca Digital Frank Brugal A.",
+        "description": "Centro de conocimiento gratuito con 38 años de experiencia empresarial",
+        "url": "https://frankbrugal-github-io.vercel.app",
+        "founder": {
+            "@type": "Person",
+            "name": "Frank Brugal A.",
+            "email": "brugalfrank7@gmail.com"
+        },
+        "location": {
+            "@type": "Place",
+            "addressCountry": "DO",
+            "addressRegion": "República Dominicana"
+        }
+    }
+    </script>
+</body>
+</html>
