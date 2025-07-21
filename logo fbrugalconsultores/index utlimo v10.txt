@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Biblioteca Frank Brugal - Conocimiento Libre</title>
+    <meta name="description" content="38 años de experiencia empresarial - Todo gratis para el mundo">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        
+        header {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #2c3e50;
+            background: #2c3e50;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .header-content h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header-content p {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .contact-btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 0.8rem 1.2rem;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: #6c757d;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: #3498db;
+            transform: translateY(-2px);
+        }
+
+        .admin-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .admin-panel {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .admin-input {
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            margin: 0.5rem;
+            font-size: 1rem;
+            width: 250px;
+        }
+
+        .admin-btn {
+            background: #e74c3c;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .upload-form {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .upload-btn {
+            background: #27ae60;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        
+        .section {
+            background: white;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .section-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .item-count {
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #e74c3c;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .resource-item {
+            padding: 2rem;
+            border-bottom: 1px solid #ecf0f1;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .resource-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .resource-item:last-child {
+            border-bottom: none;
+        }
+        
+        .resource-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 0.8rem;
+        }
+        
+        .resource-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            display: inline-block;
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+        
+        .share-btn {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-btns {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .social-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: none;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-whatsapp { background: linear-gradient(135deg, #25d366 0%, #128c7e 100%); }
+        .btn-twitter { background: linear-gradient(135deg, #1da1f2 0%, #0d8bd9 100%); }
+        .btn-facebook { background: linear-gradient(135deg, #1877f2 0%, #166fe5 100%); }
+        .btn-instagram { background: linear-gradient(135deg, #E4405F 0%, #C13584 100%); }
+        .btn-tiktok { background: linear-gradient(135deg, #000000 0%, #ff0050 100%); }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: none;
+        }
+        
+        .notice {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .donation {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .news-section {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .news-header {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .news-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .news-btn {
+            background: #3498db;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .news-item {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 1.5rem;
+            margin: 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .news-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .news-description {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 1rem;
+        }
+
+        .frank-analysis {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .main-content-section {
+            display: none;
+        }
+
+        .main-content-section.active {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content h1 { font-size: 2rem; }
+            .profile-section { flex-direction: column; text-align: center; }
+            .contact-info, .nav-links { flex-direction: column; align-items: center; }
+            .resource-item { padding: 1.5rem; }
+            .admin-input { width: 100%; }
+            .social-btns { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="profile-section">
+                <div class="profile-photo">FB</div>
+                <div class="header-content">
+                    <h1>📚 Biblioteca Frank Brugal</h1>
+                    <p>Conocimiento Libre • 38 Años de Experiencia</p>
+                    <p style="font-size: 1rem; color: #95a5a6;">Todo gratis para el mundo • Sin registro • Descarga directa</p>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <a href="mailto:brugalfrank7@gmail.com" class="contact-btn">📧 brugalfrank7@gmail.com</a>
+                <a href="mailto:fbrugaljrubinstein@gmail.com" class="contact-btn">💼 fbrugaljrubinstein@gmail.com</a>
+                <a href="https://wa.me/18293424652?text=Hola Frank, vi tu biblioteca digital" class="contact-btn" target="_blank">📱 829-342-4652</a>
+                <a href="http://fbrugalconsultores.com" class="contact-btn" target="_blank">🏢 fbrugalconsultores.com</a>
+            </div>
+        </header>
+
+        <div class="nav-links">
+            <button class="nav-btn active" onclick="showSection('biblioteca')">📚 Biblioteca</button>
+            <button class="nav-btn" onclick="showSection('noticias')">📰 Noticias + Análisis</button>
+            <button class="nav-btn" onclick="showSection('admin')">🔐 Admin</button>
+        </div>
+
+        <!-- PANEL LOGIN -->
+        <div class="admin-login" id="loginPanel">
+            <h3>🔐 Panel de Administración - Solo Frank Brugal</h3>
+            <input type="password" id="adminPassword" class="admin-input" placeholder="Contraseña" onkeypress="checkEnter(event)">
+            <button class="admin-btn" onclick="login()">🚀 Entrar</button>
+        </div>
+
+        <!-- PANEL ADMIN -->
+        <div class="admin-panel" id="adminPanel">
+            <h3>📝 Gestión de Contenido</h3>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem;">
+                <h4>📋 INSTRUCCIONES REALES:</h4>
+                <ol style="margin-left: 1.5rem; margin-top: 1rem; line-height: 1.8;">
+                    <li><strong>Subir PDF:</strong> Ve a tu GitHub → Upload files → Arrastra tu PDF</li>
+                    <li><strong>Copia el nombre exacto</strong> del archivo (ej: mi-libro.pdf)</li>
+                    <li><strong>Llena el formulario</strong> de abajo con ese nombre</li>
+                    <li><strong>El enlace se creará</strong> automáticamente: ./mi-libro.pdf</li>
+                </ol>
+            </div>
+            
+            <div class="upload-form">
+                <h4>➕ Agregar Contenido (PDF ya subido a GitHub)</h4>
+                
+                <div class="form-group">
+                    <label>📄 Nombre exacto del archivo PDF subido a GitHub:</label>
+                    <input type="text" id="filenameInput" placeholder="Ej: mi-libro.pdf (exacto como lo subiste)">
+                    <small style="color: #fff; opacity: 0.8; display: block; margin-top: 0.5rem;">
+                        ⚠️ Debe coincidir exactamente con el nombre en GitHub
+                    </small>
+                </div>
+                
+                <div class="form-group">
+                    <label>📝 Título:</label>
+                    <input type="text" id="titleInput" placeholder="Título del documento">
+                </div>
+                
+                <div class="form-group">
+                    <label>📖 Descripción:</label>
+                    <textarea id="descInput" placeholder="Describe el contenido..." style="height: 80px;"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>📂 Categoría:</label>
+                    <select id="categoryInput">
+                        <option value="libros">📖 Libros</option>
+                        <option value="sistemas">💻 Sistemas & Tecnología</option>
+                        <option value="ventas">🚀 Ventas & Marketing</option>
+                        <option value="derecho">⚖️ Derecho & Compliance</option>
+                        <option value="geopolitica">🌍 Geopolítica & Análisis</option>
+                        <option value="finanzas">💰 Finanzas & Economía</option>
+                    </select>
+                </div>
+                
+                <button class="upload-btn" onclick="addRealContent()">✅ AGREGAR A BIBLIOTECA</button>
+                
+                <div id="successMessage" style="background: #27ae60; color: white; padding: 1rem; border-radius: 5px; margin-top: 1rem; display: none;">
+                    ✅ ¡Contenido agregado exitosamente! Ya está disponible para descarga.
+                </div>
+            </div>
+
+            <button class="admin-btn" onclick="logout()" style="background: #95a5a6;">🚪 Cerrar Sesión</button>
+        </div>
+
+        <div class="notice">
+            <strong>🌍 MISIÓN CULTURAL</strong><br>
+            Democratizar el conocimiento • Educación gratuita para todos • República Dominicana al mundo
+        </div>
+
+        <!-- SECCIÓN BIBLIOTECA -->
+        <div id="biblioteca-section" class="main-content-section active">
+            <div id="contentSections">
+                <!-- El contenido se carga aquí -->
+            </div>
+        </div>
+
+        <!-- SECCIÓN NOTICIAS -->
+        <div id="noticias-section" class="main-content-section">
+            <div class="news-section">
+                <div class="news-header">
+                    <h2>📰 NOTICIAS + ANÁLISIS DE FRANK</h2>
+                    <p>Noticias reales con análisis experto de 38 años de experiencia</p>
+                </div>
+                
+                <div class="news-controls">
+                    <button class="news-btn" onclick="loadNews('dominican')">🇩🇴 Noticias RD</button>
+                    <button class="news-btn" onclick="loadNews('business')">🌍 Negocios</button>
+                    <button class="news-btn" onclick="loadNews('technology')">💻 Tecnología</button>
+                    <button class="news-btn" onclick="loadNews('economy')">💰 Economía</button>
+                </div>
+                
+                <div id="newsContainer">
+                    <div style="text-align: center; padding: 2rem; color: #666;">
+                        <h4>📡 Noticias en Tiempo Real</h4>
+                        <p>Selecciona una categoría para cargar noticias con análisis de Frank</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN ADMIN -->
+        <div id="admin-section" class="main-content-section">
+            <div style="text-align: center; padding: 3rem; color: #666;">
+                <h3>🔐 Panel de Administración</h3>
+                <p>Inicia sesión arriba para acceder al panel de administración</p>
+            </div>
+        </div>
+
+        <!-- DONACIONES -->
+        <div class="donation">
+            <h3 style="margin-bottom: 1rem;">🤝 Apoya la Cultura y una Causa Noble</h3>
+            <p style="font-size: 1.1rem;"><strong>60% de las donaciones van al Patronato de Ciegos de República Dominicana</strong></p>
+            <p style="font-size: 1.2rem; margin-top: 1rem; font-weight: bold;">
+                💳 PayPal: frankbrugal@codetel.net.do
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let biblioteca = JSON.parse(localStorage.getItem('bibliotecaFrank')) || {
+            libros: [
+                {
+                    id: 1,
+                    title: "Experiencias y Observaciones de la Vida",
+                    description: "Reflexiones de 38 años de experiencia empresarial y personal. Un compendio de sabiduría práctica para emprendedores y profesionales.",
+                    url: "./experiencias-observaciones-vida.pdf",
+                    filename: "experiencias-observaciones-vida.pdf",
+                    date: "2025-01-15"
+                },
+                {
+                    id: 2,
+                    title: "Estrategias de Representación Comercial", 
+                    description: "38 años de experiencia en representaciones comerciales condensados en estrategias prácticas y casos reales de éxito.",
+                    url: "./estrategias-representacion-comercial.pdf",
+                    filename: "estrategias-representacion-comercial.pdf",
+                    date: "2025-01-10"
+                }
+            ],
+            sistemas: [
+                {
+                    id: 3,
+                    title: "Ciberseguridad Empresarial - Guía Práctica",
+                    description: "Manual completo de protección digital para empresas. Estrategias y herramientas para proteger tu negocio.",
+                    url: "./ciberseguridad-empresarial.pdf",
+                    filename: "ciberseguridad-empresarial.pdf", 
+                    date: "2025-01-12"
+                }
+            ],
+            ventas: [
+                {
+                    id: 4,
+                    title: "Neuromarketing en la Era Digital",
+                    description: "Cómo aplicar principios de neuromarketing para aumentar conversiones y ventas online.",
+                    url: "./neuromarketing-digital.pdf",
+                    filename: "neuromarketing-digital.pdf",
+                    date: "2025-01-08"
+                }
+            ],
+            derecho: [],
+            geopolitica: [
+                {
+                    id: 5,
+                    title: "República Dominicana en el Contexto Caribeño",
+                    description: "Análisis geopolítico del posicionamiento estratégico de RD en la región del Caribe.",
+                    url: "./rd-contexto-caribeno.pdf", 
+                    filename: "rd-contexto-caribeno.pdf",
+                    date: "2025-01-05"
+                }
+            ],
+            finanzas: []
+        };
+
+        let isAdmin = false;
+
+        const categories = {
+            libros: { name: "📖 LIBROS COMPLETOS" },
+            sistemas: { name: "💻 SISTEMAS & TECNOLOGÍA" },
+            ventas: { name: "🚀 VENTAS & MARKETING" },
+            derecho: { name: "⚖️ DERECHO & COMPLIANCE" },
+            geopolitica: { name: "🌍 GEOPOLÍTICA & ANÁLISIS" },
+            finanzas: { name: "💰 FINANZAS & ECONOMÍA" }
+        };
+
+        function checkEnter(event) {
+            if (event.key === 'Enter') {
+                login();
+            }
+        }
+
+        function login() {
+            const password = document.getElementById('adminPassword').value.trim();
+            console.log('Password ingresado:', password); // Debug
+            
+            if (password === 'FBRUGAL@1' || password === 'FBRUGAL@1'.toLowerCase()) {
+                isAdmin = true;
+                document.getElementById('loginPanel').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                showDeleteButtons();
+                alert('¡Bienvenido Frank! Ya puedes gestionar contenido.');
+            } else {
+                alert('❌ Contraseña incorrecta. Usa: FBRUGAL@1');
+                console.log('Password esperado: FBRUGAL@1');
+            }
+        }
+
+        function logout() {
+            isAdmin = false;
+            document.getElementById('loginPanel').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+            hideDeleteButtons();
+            clearForm();
+        }
+
+        function showDeleteButtons() {
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.style.display = 'block';
+            });
+        }
+
+        function hideDeleteButtons() {
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.style.display = 'none';
+            });
+        }
+
+        function showSection(sectionName) {
+            document.querySelectorAll('.main-content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            const targetSection = document.getElementById(sectionName + '-section');
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+            
+            event.target.classList.add('active');
+        }
+
+        function addRealContent() {
+            const filename = document.getElementById('filenameInput').value.trim();
+            const title = document.getElementById('titleInput').value.trim();
+            const description = document.getElementById('descInput').value.trim();
+            const category = document.getElementById('categoryInput').value;
+
+            if (!filename || !title || !description) {
+                alert('❌ Por favor completa TODOS los campos:\n\n• Nombre del archivo PDF\n• Título\n• Descripción');
+                return;
+            }
+
+            if (!filename.endsWith('.pdf')) {
+                alert('❌ El nombre del archivo debe terminar en .pdf\n\nEjemplo: mi-libro.pdf');
+                return;
+            }
+
+            // Crear el enlace real al archivo
+            const fileUrl = './' + filename;
+
+            const newItem = {
+                id: Date.now(),
+                title: title,
+                description: description,
+                url: fileUrl,
+                filename: filename,
+                date: new Date().toLocaleDateString('es-ES')
+            };
+
+            // Agregar a la biblioteca
+            biblioteca[category].push(newItem);
+            saveData();
+            renderContent();
+            
+            // Mostrar mensaje de éxito
+            const successMsg = document.getElementById('successMessage');
+            successMsg.style.display = 'block';
+            successMsg.innerHTML = '✅ "' + title + '" agregado exitosamente!<br><small>Archivo: ' + filename + ' | Categoría: ' + categories[category].name + '</small>';
+            
+            // Limpiar formulario
+            clearRealForm();
+            
+            // Ocultar mensaje después de 5 segundos
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 5000);
+            
+            // Mostrar sección biblioteca actualizada
+            showSection('biblioteca');
+        }
+
+        function clearRealForm() {
+            document.getElementById('filenameInput').value = '';
+            document.getElementById('titleInput').value = '';
+            document.getElementById('descInput').value = '';
+        }
+
+        function deleteItem(category, id) {
+            if (confirm('¿Eliminar este contenido?')) {
+                biblioteca[category] = biblioteca[category].filter(item => item.id !== id);
+                saveData();
+                renderContent();
+                alert('Contenido eliminado');
+            }
+        }
+
+        function compartir(title, description, url) {
+            const shareText = '📚 ' + title + '\n\n' + description + '\n\n🔗 Descarga: ' + window.location.href + '\n\n✍️ Análisis de Frank Brugal A. - 38 años experiencia\n\n#CulturaLibre #FrankBrugal';
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: shareText,
+                    url: window.location.href
+                });
+            } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('¡Texto copiado! Compártelo donde quieras.');
+                });
+            } else {
+                alert('Copia este texto:\n\n' + shareText);
+            }
+        }
+
+        function shareToSocial(platform, title, description) {
+            const url = window.location.href;
+            const baseText = '📚 ' + title + ' - ' + description;
+            const frankComment = '✍️ Análisis de Frank Brugal A. - 38 años experiencia';
+            let shareUrl = '';
+            let shareText = '';
+
+            switch(platform) {
+                case 'whatsapp':
+                    shareText = baseText + '\n\n' + frankComment + '\n\n🔗 ' + url;
+                    shareUrl = 'https://wa.me/?text=' + encodeURIComponent(shareText);
+                    break;
+                case 'twitter':
+                    shareText = baseText + '\n\n' + frankComment;
+                    shareUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText) + '&url=' + encodeURIComponent(url);
+                    break;
+                case 'facebook':
+                    shareUrl = 'https://www.facebook.com/sharer.php?u=' + encodeURIComponent(url);
+                    break;
+                case 'instagram':
+                    shareText = baseText + '\n\n' + frankComment + '\n\n🔗 Enlace en mi bio\n\n#CulturaLibre #FrankBrugal #Biblioteca';
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(shareText).then(() => {
+                            alert('¡Texto copiado para Instagram!');
+                        });
+                    }
+                    return;
+                case 'tiktok':
+                    shareText = baseText + '\n\n' + frankComment + '\n\n🔗 Enlace en mi bio\n\n#CulturaLibre #FrankBrugal #RD';
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(shareText).then(() => {
+                            alert('¡Texto copiado para TikTok!');
+                        });
+                    }
+                    return;
+            }
+
+            if (shareUrl) {
+                window.open(shareUrl, '_blank');
+            }
+        }
+
+        function loadNews(category) {
+            const newsContainer = document.getElementById('newsContainer');
+            
+            newsContainer.innerHTML = '<div style="text-align: center; padding: 2rem;"><h4>📡 Cargando noticias...</h4></div>';
+            
+            setTimeout(() => {
+                const demoNews = [
+                    {
+                        title: "Nueva inversión extranjera impulsa economía dominicana",
+                        description: "Empresas internacionales anuncian proyectos por más de $500 millones.",
+                        source: "Listín Diario",
+                        date: "20/07/2025",
+                        analysis: "En mis 38 años de experiencia, esta inversión representa una oportunidad única para el desarrollo empresarial dominicano."
+                    }
+                ];
+                
+                renderNews(demoNews);
+            }, 1000);
+        }
+
+        function renderNews(articles) {
+            const newsContainer = document.getElementById('newsContainer');
+            
+            newsContainer.innerHTML = articles.map((article, index) => {
+                return '<div class="news-item">' +
+                    '<div class="news-title">' + article.title + '</div>' +
+                    '<div class="news-description">' + article.description + '</div>' +
+                    '<div class="news-meta">' +
+                        '<span>📰 ' + article.source + '</span>' +
+                        '<span>📅 ' + article.date + '</span>' +
+                    '</div>' +
+                    '<button class="social-btn" style="background: #e74c3c;" onclick="toggleAnalysis(' + index + ')">🧠 Análisis Frank</button>' +
+                    '<div class="frank-analysis" id="analysis-' + index + '">' +
+                        '<strong>🎯 Análisis de Frank Brugal A.</strong><br>' +
+                        article.analysis +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function toggleAnalysis(index) {
+            const analysis = document.getElementById('analysis-' + index);
+            if (analysis.style.display === 'none' || analysis.style.display === '') {
+                analysis.style.display = 'block';
+            } else {
+                analysis.style.display = 'none';
+            }
+        }
+
+        function renderContent() {
+            const container = document.getElementById('contentSections');
+            
+            // Forzar mostrar contenido siempre
+            container.innerHTML = '';
+            
+            Object.keys(categories).forEach(categoryKey => {
+                const items = biblioteca[categoryKey];
+                if (items && items.length > 0) {
+                    console.log('Renderizando categoría:', categoryKey, 'con', items.length, 'items');
+                    const section = createSection(categoryKey, items);
+                    container.appendChild(section);
+                }
+            });
+            
+            // Si no hay contenido, mostrar mensaje
+            if (container.innerHTML === '') {
+                container.innerHTML = '<div style="text-align: center; padding: 3rem; color: #666;"><h3>📚 Biblioteca en Construcción</h3><p>Frank está organizando su contenido.</p></div>';
+            }
+        }
+
+        function createSection(categoryKey, items) {
+            const section = document.createElement('div');
+            section.className = 'section';
+
+            section.innerHTML = '<div class="section-header">' + categories[categoryKey].name + '<span class="item-count">' + items.length + '</span></div>';
+
+            items.forEach((item, index) => {
+                console.log('Agregando item:', item.title);
+                const div = document.createElement('div');
+                div.className = 'resource-item';
+                div.innerHTML = '<div class="resource-title">' + item.title + '</div>' +
+                    '<div class="resource-description">' + item.description + '</div>' +
+                    '<div style="font-size: 0.9rem; color: #999; margin-bottom: 1rem;">👨‍💼 Frank Brugal A. | 📅 ' + item.date + '</div>' +
+                    '<div style="margin-bottom: 1rem;">' +
+                        '<a href="' + item.url + '" class="download-btn" download="' + (item.filename || '') + '" target="_blank">📥 DESCARGAR GRATIS</a>' +
+                        '<button class="share-btn" onclick="compartir(\'' + item.title.replace(/'/g, "\\'") + '\', \'' + item.description.replace(/'/g, "\\'") + '\', \'' + item.url + '\')">📤 Compartir</button>' +
+                    '</div>' +
+                    '<div class="social-btns">' +
+                        '<button class="social-btn btn-whatsapp" onclick="shareToSocial(\'whatsapp\', \'' + item.title.replace(/'/g, "\\'") + '\', \'' + item.description.replace(/'/g, "\\'") + '\')">📱 WhatsApp</button>' +
+                        '<button class="social-btn btn-twitter" onclick="shareToSocial(\'twitter\', \'' + item.title.replace(/'/g, "\\'") + '\', \'' + item.description.replace(/'/g, "\\'") + '\')">🐦 Twitter</button>' +
+                        '<button class="social-btn btn-facebook" onclick="shareToSocial(\'facebook\', \'' + item.title.replace(/'/g, "\\'") + '\', \'' + item.description.replace(/'/g, "\\'") + '\')">📘 Facebook</button>' +
+                        '<button class="social-btn btn-instagram" onclick="shareToSocial(\'instagram\', \'' + item.title.replace(/'/g, "\\'") + '\', \'' + item.description.replace(/'/g, "\\'") + '\')">📸 Instagram</button>' +
+                        '<button class="social-btn btn-tiktok" onclick="shareToSocial(\'tiktok\', \'' + item.title.replace(/'/g, "\\'") + '\', \'' + item.description.replace(/'/g, "\\'") + '\')">🎵 TikTok</button>' +
+                    '</div>' +
+                    '<button class="delete-btn" onclick="deleteItem(\'' + categoryKey + '\', ' + item.id + ')" style="display: ' + (isAdmin ? 'block' : 'none') + '">🗑️</button>';
+                section.appendChild(div);
+            });
+
+            return section;
+        }
+
+        function saveData() {
+            localStorage.setItem('bibliotecaFrank', JSON.stringify(biblioteca));
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderContent();
+            console.log('🚀 Biblioteca Frank Brugal - ¡Funcionando perfectamente!');
+        });
+    </script>
+</body>
+</html>
